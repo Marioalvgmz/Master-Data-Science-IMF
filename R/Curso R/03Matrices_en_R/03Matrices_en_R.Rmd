@@ -1,0 +1,122 @@
+---
+title: "Matrices en R"
+output: html_notebook
+---
+# Caso practico 1
+## Ejercicio 1
+Crear una matriz como la siguiente:
+
+     [, 1] [, 2] [, 3]
+
+[1,]    1    8     3
+
+[2,]    5    1     2
+
+- Primer elemento de la primera columna.
+- Segunda fila, tercera columna.
+- Primera fila.
+- Segunda columna.
+- Primera y segunda columna, primera fila.
+- Primera y tercera columna, segunda fila.
+- Todas las columnas excepto la segunda.
+
+```{r}
+matriz <- matrix(c(1,8,3,5,1,2), ncol=3, byrow=TRUE)
+matriz
+```
+```{r}
+matriz[1,1]
+matriz[2,3]
+matriz[1,]
+matriz[,2]
+matriz[1,c(1,2)]
+matriz[2,c(1,3)]
+matriz[,-2]
+
+```
+## Ejercicio 2
+Crear vectores para las columnas de la matriz:
+
+warner <- c(20, 20, 16, 17, 17, 22, 17, 18, 19)
+
+disney <- c(11, 13, 11, 8, 12, 11, 12, 8, 10)
+
+fox <- c(18, 15, 15, 15, 16, 17, 15, 13, 11)
+
+- Crear una matriz llamada compañiascine a partir de vectores antes anteriores.
+- Imprimir el contenido de la matriz.
+
+```{r}
+warner <- c(20, 20, 16, 17, 17, 22, 17, 18, 19)
+disney <- c(11, 13, 11, 8, 12, 11, 12, 8, 10)
+fox <- c(18, 15, 15, 15, 16, 17, 15, 13, 11)
+
+compañiascine <- matrix(c(warner,disney,fox), ncol=3, dimnames = list(c(),c("Warner","Disney","Fox")))
+compañiascine
+```
+# Caso Practico 2
+## Ejercicio 1
+Crear una matriz 3 x 2, como la siguiente:
+
+     [, 1] [, 2] 
+
+[1,]    1    4     
+
+[2,]    2    5 
+
+[3,]    3    6
+
+De ella, se quiere ver:
+
+a. Número de elementos de x
+b. Tipo de datos de la matriz x
+c. Dimensiones de la matriz x
+d. Nombre de las filas de la matriz
+e. Nombre de las columnas de la matriz
+
+```{r}
+x <- matrix(c(1,2,3,4,5,6), ncol=2)
+x
+```
+```{r}
+typeof(x)
+dim(x)
+rownames(x)
+colnames(x)
+```
+## Ejercicio 2
+Se debe crear la siguiente matriz:
+
+ 
+
+     Edad  Peso  Altura  
+Paco   20    65     174
+
+Pepe   22    70     180
+
+Kiko   19    68     170
+
+a. Edades de todas las personas
+b. Datos de “Pepe"
+c. Edad y altura de todas las personas
+d. Mostrar los nombres de filas y cols.
+
+```{r}
+e <- c(20,22,19)
+p <- c(65,70,68)
+a <- c(174,180,170)
+
+m<-matrix(c(e,p,a), ncol=3,
+          dimnames = list(
+            c("Paco","Pepe","Kiko"),c("Edad","Peso","Altura")
+          ))
+m
+```
+```{r}
+m[,"Edad"]
+m["Pepe",]
+m[,c("Edad","Altura")]
+colnames(m)
+rownames(m)
+```
+

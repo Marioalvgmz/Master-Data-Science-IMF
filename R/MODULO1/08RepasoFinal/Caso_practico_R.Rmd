@@ -1,0 +1,143 @@
+---
+title: "Unidad Repaso, Caso práctico R"
+output:
+  html_document:
+    df_print: paged
+autor: Juan Manuel Moreno
+---
+
+Toma el dataset IBM.csv y realiza el siguiente análisis exploratorio:
+
+* Carga el dataset como dataframe (el valor 999 es nulo) y muestra sus primeras filas, su resúmen estadístico y la estructura de sus columnas.
+* Reemplaza todos los valores nulos de la columna "Open", por su mediana
+* Divide la columna "Date" en "Dia", "Mes" y "Año".
+* Cambia la columna Año a factor.
+* Devuelve el precio más alto de cada año.
+* Muestra una tabla de frecuencias para cada año.
+* Obtén una nueva columna que se llame "Diferencias" y que se el resultado de restar al precio más alto el precio más bajo.
+* Ordena el dataset de forma ascendente por la columna "Diferencias".
+* Muestra un resúmen estadístico del dataset en función de los siguientes valores por cada año:
+  + Precio más alto de apertura.
+  + Precio más bajo de cierre.
+  + Media de la columna "Diferencia".
+  + Número de elementos para cada año.
+* Muestra el sumatorio de la variable Volumen para todos los años.
+* Obtén dos histogramas para las variables de precio de apertura y cierre, rellena los histogramas en función del año.
+* Muestra un diagrama de dispersión entre los precios más altos y más bajos, además muestra su recta de ajuste.
+* Obtén un diagrama de caja y bigotes de la variable Adj.Close por año.
+* Muestra para cada año un diagrama de densidad para la variable "Volume".
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# Carga el dataset como dataframe (el valor 999 es nulo) y muestra sus primeras filas, su resúmen estadístico y la estructura de sus columnas. 
+
+df <- read.csv("IBM.csv", header = TRUE, na.strings = 999)
+```
+
+```{r}
+head(df)
+summary(df)
+str(df)
+```
+
+
+```{r}
+# Reeemplaza todos los valores nulos de la columna "Open", por su mediana
+
+df$Open[which(is.na(df$Open))] <- median(df$Open, na.rm = TRUE)
+```
+```{r}
+summary(df)
+```
+
+```{r}
+# Divide la columna "Date" en "Dia", "Mes" y "Año".
+df <- separate(df, Date, into = c("Dia", "Mes", "Año"), sep = "/")
+
+head(df)
+colnames(df)
+```
+
+```{r}
+# Cambia la columna Año a factor.
+df$Año <- as.factor(df$Año)
+```
+
+```{r}
+# Devuelve el precio más alto de cada año.
+df %>% select(Año, High) %>% group_by(Año) %>% summarise(max_año = max(High)) %>% arrange(max_año)
+```
+
+```{r}
+# Muestra una tabla de frecuencias para cada año.
+table(df$Año)
+```
+```{r}
+# Obtén una nueva columna que se llame "Diferencias" y que se el resultado de restar al precio más alto el precio más bajo.
+df$Diferencia <- df$High - df$Low
+
+summary(df)
+```
+
+```{r}
+# Ordena el dataset por la columna diferencia de forma ascendente
+df <- df[order(df$Diferencia), ]
+```
+
+```{r}
+#  Muestra un resúmen estadístico del dataset en función de los siguientes valores por cada año:
+#   + Precio más alto de apertura.
+#   + Precio más bajo de cierre.
+#   + Media de la columna "Diferencia".
+#   + Número de elementos para cada año.
+
+df %>% select(Año, Open, Close, Diferencia) %>% group_by(Año) %>%
+  summarise(
+      max_apertura = max(Open),
+      min_close = min(Close),
+      mean_diff = mean(Diferencia),
+      elem_anual= n()
+)
+```
+
+```{r}
+# Muestra el sumatorio de la variable Volumen para todos los años.
+tapply(df$Volume, df$Año, sum)
+```
+
+```{r}
+# Obtén dos histogramas para las variables de precio de apertura y cierre, rellena los histogramas en función del año.
+
+ggplot(df) +
+  geom_histogram(mapping = aes(x = Open, fill = Año))
+
+ggplot(df) +
+  geom_histogram(mapping = aes(x = Close, fill = Año))
+```
+
+```{r}
+# Muestra un diagrama de dispersión entre los precios más altos y más bajos, además muestra su recta de ajuste.
+ggplot(df) + 
+  geom_point(mapping = aes(x = High, y = Low)) + geom_smooth(aes(x = High, y = Low), method = lm)
+```
+
+```{r}
+# Obtén un diagrama de caja y bigotes de la variable Adj.Close por año.
+
+ggplot(df) +
+  geom_boxplot(mapping = aes(x = Adj.Close, fill = Año)) + coord_flip()
+```
+
+```{r}
+# Muestra para cada año un diagrama de densidad para la variable "Volume".
+
+ggplot(df) +
+  geom_density(mapping = aes(Volume, colour = Año)) + facet_wrap(~Año)
+```
+
+
