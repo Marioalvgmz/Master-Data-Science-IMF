@@ -1,0 +1,129 @@
+---
+title: "EJERCICIO_1_SOLUCION"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+  pdf_document: default
+---
+
+Mediante el dataset **`diamonds`** del paquete **ggplot2** se realizarán las siguientes gráficas y transformaciones:
+
+* (Gráficos básicos R) - Hacer un gráfico de barras con la cantidad de diamantes que hay para cada valor de la variable **cut**.
+* (Ggplot2) - Realiza un histograma del **precio** que muestre la frecuencia acumulada de la variable **cut**.
+* (Ggplot2) - Realiza un diagrama boxplot sobre el **precio** en función de la variable **cut**, obtén un diagrama diferente por cada variable **clarity**
+* (Gráficos básicos de R) - Realiza una gráfica múltiple de 4 visualizaciones, en donde para cada visualización se realice un diagrama de dispersión en el que se tomen los valores: **x**, **y**, **z** y **carat** contra **depth**.
+* (Ggplot2) - Realiza un diagrama de dispersión con recta de ajuste del **price** sobre **carat**.
+* (Plotly) - Toma una muestra de 100 observaciones y, realiza un diagrama de barras de la variable **cut** contra **price**, en función de **clarity**
+* (Plotly) - Realiza un diagrama de sectores de la variable **cut** con los valores de **carat**
+
+## SOLUCIÓN
+
+```{r}
+library(ggplot2)
+library(plotly)
+```
+```{r}
+head(diamonds)
+```
+```{r}
+str(diamonds)
+```
+```{r}
+summary(diamonds)
+```
+
+
+```{r}
+# Hacer un gráfico de barras con la cantidad de diamantes que hay para cada valor de la variable cut.
+plot(diamonds$cut, 
+     main = "Corte del diamante", 
+     xlab = "Tipo de diamante", 
+     ylab = "Valores", 
+     las = 1,
+     col = topo.colors(length(unique(diamonds$cut))))
+```
+
+```{r}
+# Realiza un histograma del precio que muestre la frecuencia acumulada de la variable cut.
+ggplot(diamonds) +
+  geom_histogram(mapping = aes(x = price, fill = cut))
+```
+
+```{r}
+# Realiza un diagrama boxplot sobre el precio en función de la variable cut, obtén un diagrama diferente por cada variable clarity.
+
+ggplot(diamonds) +
+  geom_boxplot(mapping = aes(price, fill = cut)) + facet_wrap(~clarity)
+```
+
+```{r}
+# Realiza una gráfica múltiple de 4 visualizaciones, en donde para cada visualización se realice un diagrama de dispersión en el que se tomen los valores: x, y, z y carat contra depth.
+
+par(mfcol=c(2,2))
+
+# Fila 1, columna 1
+plot(diamonds$x, diamonds$depth, 
+     xlab = "Variable X", 
+     ylab = "depth", 
+     main = "X ~ depth",
+     col = 'darkgreen')
+
+# Fila 2, columna 1
+plot(diamonds$y, diamonds$depth, 
+     xlab = "Variable Y", 
+     ylab = "depth", 
+     main = "Y ~ depth",
+     col = 'darkred')
+
+# Fila 1, columna 2
+plot(diamonds$z, diamonds$depth, 
+     xlab = "Variable Z", 
+     ylab = "depth", 
+     main = "Z ~ depth",
+     col = 'blue')
+
+# Fila 2, columna 2
+plot(diamonds$carat, diamonds$depth, 
+     xlab = "Variable Quilates", 
+     ylab = "depth", 
+     main = "Quilates ~ depth",
+     col = 'purple')
+```
+
+```{r}
+# Realiza un diagrama de dispersión con recta de ajuste del price sobre carat.
+
+ggplot(diamonds) +
+  geom_point(mapping = aes(price, carat)) + geom_smooth(aes(price, carat), method = lm)
+```
+
+```{r}
+# Toma una muestra de 100 observaiones y, realiza un diagrama de barras de la variable cut contra price, en función de clarity.
+
+library(dplyr)
+
+fig.bar <- plot_ly (
+  data = sample_n(diamonds, 100),
+  x = ~cut,
+  y = ~price,
+  type = "bar",
+  color = ~clarity
+)
+
+fig.bar 
+```
+
+```{r}
+# Realiza un diagram de sectores de la variable cut con los valores de carat.
+  
+fig <- plot_ly(
+  data = diamonds,
+  labels = ~cut,
+  values = ~carat,
+  type = 'pie'
+) 
+
+fig
+```
+

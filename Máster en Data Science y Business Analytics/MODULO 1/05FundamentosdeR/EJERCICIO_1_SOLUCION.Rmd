@@ -1,0 +1,79 @@
+---
+title: "EJERCICIO_1_SOLUCION"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+* 1. Crea un vector con la secuencia 1, 2, 3, 4, 5 de longitud 10
+* 2. Crea un array de dos dimensiones, de 10 elementos cada una con los 20 primeros números pares del 0 al 40.
+* 3. Crea una muestra de números aleatorios del 1 a 100 con repetición de longitud 10.
+* 4. Crea un nuevo vector que sea el resultado de la suma fila a fila de cada dimensión del array.
+* 5. Finalmente crea un dataframe con todas las estructuras de datos creadas anteriormente y muestra el resumen estadístico del dataframe.
+
+## SOLUCIÓN
+
+```{r}
+# 1 Crea un vector con la secuencia 1, 2, 3, 4, 5 de longitud 10
+vec <- 1:10
+vec
+```
+
+```{r}
+# 2. Crea un array de dos dimensiones, de 10 elementos cada una con los 20 primeros números pares del 0 al 40.
+
+# Inicializamos un vector para posteriormente convertirlo en array.
+aux.vec <- c()
+
+# Inicializamos el índice del array
+i <- 1
+
+for (number in 0:40) {
+  
+  if (number %% 2 == 0){
+    
+    aux.vec[i] <- number
+    # aumentamos en 1 el índice del array
+    i <- i + 1
+    
+  } else {
+    
+    next
+  }
+  
+}
+
+aux.vec
+```
+```{r}
+# Creamos el array
+arr <- array(aux.vec, c(10, 2))
+
+arr
+```
+
+```{r}
+# 3. Crea una muestra de números aleatorios con repetición de longitud 10.
+samp <- sample(1:100, 10, replace = T)
+
+samp
+```
+
+```{r}
+# 4. Crea un nuevo vector que sea el resultado de la suma fila a fila de cada dimensión del array.
+
+arr.sums <- rowSums(arr)
+arr.sums
+```
+
+```{r}
+# 5. Finalmente crea un dataframe con todas las estructuras de datos creadas anteriormente y muestra el resúmen estadístico del dataframe.
+
+
+df <- data.frame("columna_1"=vec, "columna_2"=arr[, 1],
+                 "columna_3"=arr[,2], "columna_4"=arr.sums)
+
+summary(df)
+```
+
