@@ -1,10 +1,9 @@
 ---
 title: "Ejercicio R Mario Álvarez Gómez"
 output:
-  pdf_document: default
+  md_document: default
   html_document: default
-  md_document:
-    variant: markdown_github
+  pdf_document: default
 ---
 
 # Ejercicio Final R
