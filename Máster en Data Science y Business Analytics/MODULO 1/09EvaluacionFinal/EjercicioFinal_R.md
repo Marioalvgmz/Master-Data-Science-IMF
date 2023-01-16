@@ -11,26 +11,26 @@ disponible en el siguiente enlace:
 Con esta información, alumno debe realizar los siguientes procesos de
 analítica:
 
-1.  Cargar el archivo “Airbnb\_Milan.csv” como dataframe.
+1.  Cargar el archivo “Airbnb_Milan.csv” como dataframe.
 
 2.  Crear un nuevo dataframe que contenga únicamente las siguientes
     columnas:
 
-    -   “host\_is\_superhost”
-    -   “host\_identity\_verified”
+    -   “host_is_superhost”
+    -   “host_identity_verified”
     -   “bathrooms”
     -   “bedrooms”
-    -   “daily\_price”
-    -   “security\_deposit”
-    -   “minimum\_nights”
-    -   “number\_of\_reviews”
-    -   “review\_scores\_rating”
+    -   “daily_price”
+    -   “security_deposit”
+    -   “minimum_nights”
+    -   “number_of_reviews”
+    -   “review_scores_rating”
 
-3.  Cambiar los factores de la variable “host\_is\_superhost” de 0, 1 a:
+3.  Cambiar los factores de la variable “host_is_superhost” de 0, 1 a:
     “SI” y, “NO”. (investigar la función recode).
 
-4.  Cambiar los factores de la variable “host\_identity\_verified” de 0,
-    1 a: “VERIFICA” y “NO VERIFICA”.
+4.  Cambiar los factores de la variable “host_identity_verified” de 0, 1
+    a: “VERIFICA” y “NO VERIFICA”.
 
 5.  Mostrar un resumen estadístico de los datos.
 
@@ -62,13 +62,15 @@ analítica:
     enseñe la cuantía del depósito de seguridad en función de si el
     anfitrión es super host o no.
 
-16. Cargar el archivo “Airbnb\_Milan.csv” como dataframe.
+16. Cargar el archivo “Airbnb_Milan.csv” como dataframe.
 
-<!-- -->
+``` r
+milan <- read.csv("Airbnb_Milan.csv", header = T)
+```
 
-    milan <- read.csv("Airbnb_Milan.csv", header = T)
-
-    head(milan)
+``` r
+head(milan)
+```
 
     ##   X     id host_id host_location host_response_time host_response_rate
     ## 1 1  73892  387110             1                  1                 57
@@ -172,19 +174,19 @@ analítica:
 1.  Crear un nuevo dataframe que contenga únicamente las siguientes
     columnas:
 
-    -   “host\_is\_superhost”
-    -   “host\_identity\_verified”
+    -   “host_is_superhost”
+    -   “host_identity_verified”
     -   “bathrooms”
     -   “bedrooms”
-    -   “daily\_price”
-    -   “security\_deposit”
-    -   “minimum\_nights”
-    -   “number\_of\_reviews”
-    -   “review\_scores\_rating”
+    -   “daily_price”
+    -   “security_deposit”
+    -   “minimum_nights”
+    -   “number_of_reviews”
+    -   “review_scores_rating”
 
-    <!-- -->
-
-        library(dplyr)
+    ``` r
+    library(dplyr)
+    ```
 
         ## 
         ## Attaching package: 'dplyr'
@@ -197,12 +199,14 @@ analítica:
         ## 
         ##     intersect, setdiff, setequal, union
 
-        library(tidyr)
+    ``` r
+    library(tidyr)
+    ```
 
-<!-- -->
-
-    df <- milan %>% select(host_is_superhost, host_identity_verified, bathrooms, bedrooms, daily_price, security_deposit, minimum_nights, number_of_reviews, review_scores_rating)
-    head(df)
+``` r
+df <- milan %>% select(host_is_superhost, host_identity_verified, bathrooms, bedrooms, daily_price, security_deposit, minimum_nights, number_of_reviews, review_scores_rating)
+head(df)
+```
 
     ##   host_is_superhost host_identity_verified bathrooms bedrooms daily_price
     ## 1                 0                      1         3        1          94
@@ -219,19 +223,21 @@ analítica:
     ## 5               13             30                44                   90
     ## 6               48             15                79                   98
 
-1.  Cambiar los factores de la variable “host\_is\_superhost” de 0, 1 a:
+1.  Cambiar los factores de la variable “host_is_superhost” de 0, 1 a:
     “SI” y, “NO”. (investigar la función recode).
 
-<!-- -->
+``` r
+df <- df %>% mutate(host_is_superhost=recode(host_is_superhost, 
+                                             "0" = "SI", 
+                                             "1" = "NO"))
 
-    df <- df %>% mutate(host_is_superhost=recode(host_is_superhost, 
-                                                 "0" = "SI", 
-                                                 "1" = "NO"))
+# Convertir a factores
+df$host_is_superhost <- as.factor(df$host_is_superhost)
+```
 
-    # Convertir a factores
-    df$host_is_superhost <- as.factor(df$host_is_superhost)
-
-    str(df)
+``` r
+str(df)
+```
 
     ## 'data.frame':    9322 obs. of  9 variables:
     ##  $ host_is_superhost     : Factor w/ 2 levels "NO","SI": 2 2 2 2 1 2 1 2 2 2 ...
@@ -244,19 +250,21 @@ analítica:
     ##  $ number_of_reviews     : int  84 3 70 57 44 79 72 126 377 22 ...
     ##  $ review_scores_rating  : int  94 100 97 97 90 98 96 98 94 95 ...
 
-1.  Cambiar los factores de la variable “host\_identity\_verified” de 0,
-    1 a: “VERIFICA” y “NO VERIFICA”.
+1.  Cambiar los factores de la variable “host_identity_verified” de 0, 1
+    a: “VERIFICA” y “NO VERIFICA”.
 
-<!-- -->
+``` r
+df <- df %>% mutate(host_identity_verified=recode(host_identity_verified, 
+                                             "0" = "VERIFICA", 
+                                             "1" = "NO VERIFICA"))
 
-    df <- df %>% mutate(host_identity_verified=recode(host_identity_verified, 
-                                                 "0" = "VERIFICA", 
-                                                 "1" = "NO VERIFICA"))
+# Convertir a factores
+df$host_identity_verified <- as.factor(df$host_identity_verified)
+```
 
-    # Convertir a factores
-    df$host_identity_verified <- as.factor(df$host_identity_verified)
-
-    str(df)
+``` r
+str(df)
+```
 
     ## 'data.frame':    9322 obs. of  9 variables:
     ##  $ host_is_superhost     : Factor w/ 2 levels "NO","SI": 2 2 2 2 1 2 1 2 2 2 ...
@@ -271,9 +279,9 @@ analítica:
 
 1.  Mostrar un resumen estadístico de los datos.
 
-<!-- -->
-
-    summary(df)
+``` r
+summary(df)
+```
 
     ##  host_is_superhost host_identity_verified   bathrooms         bedrooms     
     ##  NO:2693           NO VERIFICA:4020       Min.   : 1.000   Min.   : 0.000  
@@ -300,9 +308,9 @@ analítica:
 1.  Filtrar el dataset por apartamentos cuyo mínimo de noches sea igual
     o menor que siete.
 
-<!-- -->
-
-    head(filter(df,minimum_nights <= 7))
+``` r
+head(filter(df,minimum_nights <= 7))
+```
 
     ##   host_is_superhost host_identity_verified bathrooms bedrooms daily_price
     ## 1                SI            NO VERIFICA         3        1          94
@@ -322,9 +330,9 @@ analítica:
 1.  ¿Cuál es el precio medio por día de una habitación en función de si
     el anfitrión tiene verificado o no su perfil?
 
-<!-- -->
-
-    df %>% group_by(host_identity_verified) %>% summarise(precio_medio = mean(daily_price))
+``` r
+df %>% group_by(host_identity_verified) %>% summarise(precio_medio = mean(daily_price))
+```
 
     ## # A tibble: 2 × 2
     ##   host_identity_verified precio_medio
@@ -334,9 +342,9 @@ analítica:
 
 1.  Quién tiene más número de reseñas, ¿un super host o no super host?
 
-<!-- -->
-
-    df %>% group_by(host_is_superhost) %>% summarise(múmero_reseñas = sum(number_of_reviews))
+``` r
+df %>% group_by(host_is_superhost) %>% summarise(múmero_reseñas = sum(number_of_reviews))
+```
 
     ## # A tibble: 2 × 2
     ##   host_is_superhost múmero_reseñas
@@ -347,9 +355,9 @@ analítica:
 1.  Sobre la estadística anterior ¿quién tiene la puntuación media más
     alta?
 
-<!-- -->
-
-    df %>% group_by(host_is_superhost) %>% summarise(media_reseñas = mean(number_of_reviews))
+``` r
+df %>% group_by(host_is_superhost) %>% summarise(media_reseñas = mean(number_of_reviews))
+```
 
     ## # A tibble: 2 × 2
     ##   host_is_superhost media_reseñas
@@ -361,10 +369,10 @@ analítica:
     para la puntuación de las reseñas tiene de 0 a 49, sea “NO
     ACONSEJABLE”; de 50 a 75 sea “ESTÁNDAR”; y de 76 a 100 sea “TOP”.
 
-<!-- -->
-
-    df["CATEGORIA"] <- factor(ifelse(df$review_scores_rating <= 49, "NO ACONSEJABLE", ifelse(df$review_scores_rating <= 75, "ESTANDAR", "TOP")))
-    head(df)
+``` r
+df["CATEGORIA"] <- factor(ifelse(df$review_scores_rating <= 49, "NO ACONSEJABLE", ifelse(df$review_scores_rating <= 75, "ESTANDAR", "TOP")))
+head(df)
+```
 
     ##   host_is_superhost host_identity_verified bathrooms bedrooms daily_price
     ## 1                SI            NO VERIFICA         3        1          94
@@ -390,9 +398,9 @@ analítica:
 
 1.  Mostrar las frecuencias de la variable CATEGORÍA.
 
-<!-- -->
-
-    table(df$CATEGORIA)
+``` r
+table(df$CATEGORIA)
+```
 
     ## 
     ##       ESTANDAR NO ACONSEJABLE            TOP 
@@ -400,9 +408,9 @@ analítica:
 
 1.  Obtener el histograma del precio por día.
 
-<!-- -->
-
-    library(plotly)
+``` r
+library(plotly)
+```
 
     ## Loading required package: ggplot2
 
@@ -421,45 +429,49 @@ analítica:
     ## 
     ##     layout
 
-    fig <- plot_ly(
-      data = df,
-      x = ~daily_price,
-                   alpha = 0.6,
-                   type = "histogram")
-    fig
+``` r
+fig <- plot_ly(
+  data = df,
+  x = ~daily_price,
+               alpha = 0.6,
+               type = "histogram")
+fig
+```
 
-![](EjercicioFinal_R_files/figure-markdown_strict/unnamed-chunk-17-1.png)
+![](EjercicioFinal_R_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 1.  Estudiar la relación entre los dormitorios y baños de forma gráfica.
 
-<!-- -->
+``` r
+library(ggplot2)
+```
 
-    library(ggplot2)
-
-    ggplot(df) +
-      geom_point(mapping = aes(bedrooms, bathrooms)) + geom_smooth(aes(bedrooms, bathrooms), method = lm)
+``` r
+ggplot(df) +
+  geom_point(mapping = aes(bedrooms, bathrooms)) + geom_smooth(aes(bedrooms, bathrooms), method = lm)
+```
 
     ## `geom_smooth()` using formula = 'y ~ x'
 
-![](EjercicioFinal_R_files/figure-markdown_strict/unnamed-chunk-19-1.png)
+![](EjercicioFinal_R_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 1.  Mostrar un histograma del número de reseñas en función de si es un
     usuario verificado o no.
 
-<!-- -->
+``` r
+fig.bar <- plot_ly( data = df, x = ~host_identity_verified, y = ~df$review_scores_rating, type = "bar")
+fig.bar
+```
 
-    fig.bar <- plot_ly( data = df, x = ~host_identity_verified, y = ~df$review_scores_rating, type = "bar")
-    fig.bar
-
-![](EjercicioFinal_R_files/figure-markdown_strict/unnamed-chunk-20-1.png)
+![](EjercicioFinal_R_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 1.  Mostrar un histograma por cada valor de “CATEGORÍA” en el que se
     enseñe la cuantía del depósito de seguridad en función de si el
     anfitrión es super host o no.
 
-<!-- -->
+``` r
+fig.bar <- plot_ly( data = df, x = ~CATEGORIA, y = ~security_deposit, type = "bar")
+fig.bar
+```
 
-    fig.bar <- plot_ly( data = df, x = ~CATEGORIA, y = ~security_deposit, type = "bar")
-    fig.bar
-
-![](EjercicioFinal_R_files/figure-markdown_strict/unnamed-chunk-21-1.png)
+![](EjercicioFinal_R_files/figure-markdown_github/unnamed-chunk-21-1.png)
