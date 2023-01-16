@@ -2,7 +2,9 @@
 title: "Ejercicio R Mario Álvarez Gómez"
 output:
   pdf_document: default
-  html_notebook: default
+  html_document: default
+  md_document:
+    variant: markdown_github
 ---
 
 # Ejercicio Final R
@@ -127,7 +129,7 @@ summary(df)
 6.  Filtrar el dataset por apartamentos cuyo mínimo de noches sea igual o menor que siete.
 
 ```{r}
-filter(df,minimum_nights <= 7)
+head(filter(df,minimum_nights <= 7))
 
 ```
 
